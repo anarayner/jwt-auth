@@ -3,7 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors');
 
-const PORT = process.env.PORT || 5001
+const PORT = process.env.PORT || 5000
 
 const authRouter = require('./authRouter')
 const app = express()
@@ -21,7 +21,10 @@ app.use(express.json())
 app.use('/api', authRouter)
 const start = async () => {
     try {
-        await mongoose.connect('mongodb+srv://whileanaray:fGh6kxeYRIuFRcdN@cluster0.levnwxw.mongodb.net/?retryWrites=true&w=majority')
+        await mongoose.connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
         app.listen(PORT, () => console.log(`Server started on ${PORT}`))
     } catch (e) {
         console.log(e)
